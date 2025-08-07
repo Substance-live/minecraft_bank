@@ -3,46 +3,54 @@ import { TrendingUp, Package, BarChart3 } from 'lucide-react'
 const ResourceCard = ({ resource, onViewHistory }) => {
   return (
     <div
-      className="resource-card rounded-lg p-4 cursor-pointer fade-in"
+      className="stat-card cursor-pointer hover:border-primary/50 transition-all duration-200"
       onClick={() => onViewHistory(resource.name)}
     >
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center space-x-2">
-          <Package size={20} className="text-minecraft-green" />
-          <h3 className="font-bold text-white">{resource.name}</h3>
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center space-x-3">
+          <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+            <Package size={20} className="text-primary" />
+          </div>
+          <div>
+            <h3 className="font-semibold text-text">{resource.name}</h3>
+            <p className="text-text-secondary text-sm">Торгуемый актив</p>
+          </div>
         </div>
-        <div className="flex items-center space-x-1">
-          <BarChart3 
-            size={14} 
-            className="text-gray-400" 
-          />
-          <TrendingUp 
-            size={16} 
-            className="text-gray-400" 
-          />
+        <div className="flex items-center space-x-2">
+          <div className="p-2 bg-success/10 rounded-full">
+            <TrendingUp size={18} className="text-success" />
+          </div>
+          <div className="p-2 bg-primary/10 rounded-full">
+            <BarChart3 size={18} className="text-primary" />
+          </div>
         </div>
       </div>
       
-      <div className="space-y-2">
-        <div className="flex justify-between items-center">
-          <span className="text-gray-400 text-sm">Цена:</span>
-          <span className="text-minecraft-green font-bold">
-            ${resource.price.toFixed(2)}
-          </span>
+      <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border">
+        <div>
+          <span className="text-text-secondary text-sm font-medium">Цена</span>
+          <div className="flex items-center space-x-1 mt-1">
+            <span className="text-text font-semibold text-lg">
+              ${resource.price.toFixed(2)}
+            </span>
+            <span className="text-success text-sm">+2.4%</span>
+          </div>
         </div>
         
-        <div className="flex justify-between items-center">
-          <span className="text-gray-400 text-sm">Количество:</span>
-          <span className="text-white font-semibold">
-            {resource.amount.toLocaleString()}
-          </span>
+        <div>
+          <span className="text-text-secondary text-sm font-medium">Объем</span>
+          <div className="flex items-center space-x-1 mt-1">
+            <span className="text-text font-semibold text-lg">
+              {resource.amount.toLocaleString()}
+            </span>
+          </div>
         </div>
       </div>
       
-      <div className="mt-3 pt-3 border-t border-gray-600">
-        <p className="text-xs text-gray-400">
-          Нажмите для просмотра графика цен
-        </p>
+      <div className="mt-4 flex items-center justify-center">
+        <button className="btn-secondary text-sm">
+          Открыть график
+        </button>
       </div>
     </div>
   )

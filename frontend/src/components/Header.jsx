@@ -12,27 +12,41 @@ const Header = () => {
   }
 
   return (
-    <header className="bg-gray-900 border-b border-gray-700 shadow-lg">
-      <div className="container mx-auto px-4 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <Link to="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-minecraft-green rounded flex items-center justify-center">
-                <span className="text-black font-bold text-sm">M</span>
+    <header className="bg-surface border-b border-border">
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-16">
+          <div className="flex items-center">
+            <Link to="/" className="flex items-center space-x-3">
+              <div className="w-8 h-8 bg-primary rounded-md flex items-center justify-center">
+                <span className="text-white font-bold text-sm">TB</span>
               </div>
-              <h1 className="text-xl font-bold text-white minecraft-text">
-                Minecraft Bank
+              <h1 className="text-xl font-semibold text-text tracking-tight">
+                Trade Bank
               </h1>
             </Link>
+            <div className="hidden md:flex ml-10 space-x-8">
+              <Link
+                to="/"
+                className="text-text-secondary hover:text-text px-3 py-2 text-sm font-medium transition-colors"
+              >
+                Торговля
+              </Link>
+              <Link
+                to="/analytics"
+                className="text-text-secondary hover:text-text px-3 py-2 text-sm font-medium transition-colors"
+              >
+                Аналитика
+              </Link>
+            </div>
           </div>
 
-          <nav className="flex items-center space-x-4">
+          <nav className="flex items-center space-x-6">
             <Link
               to="/"
-              className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors"
+              className="flex items-center space-x-2 text-text-secondary hover:text-text transition-colors"
             >
-              <Home size={20} />
-              <span>Главная</span>
+              <Home size={18} />
+              <span className="text-sm font-medium">Главная</span>
             </Link>
 
             {isAuthenticated && (

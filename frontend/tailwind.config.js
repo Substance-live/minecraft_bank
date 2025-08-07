@@ -7,13 +7,22 @@ export default {
   theme: {
     extend: {
       colors: {
-        'minecraft-green': '#54c754',
-        'minecraft-dark': '#1d1d1d',
-        'minecraft-gray': '#555555',
-        'minecraft-light': '#aaaaaa',
+        'primary': '#2563eb',
+        'primary-dark': '#1d4ed8',
+        'success': '#059669',
+        'danger': '#dc2626',
+        'warning': '#d97706',
+        'background': '#0f172a',
+        'surface': '#1e293b',
+        'border': '#334155',
+        'text': '#f8fafc',
+        'text-secondary': '#94a3b8',
       },
       fontFamily: {
-        'minecraft': ['Minecraft', 'monospace'],
+        'sans': ['Inter', 'system-ui', 'sans-serif'],
+      },
+      boxShadow: {
+        'card': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
       },
     },
   },

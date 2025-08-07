@@ -37,7 +37,7 @@ const Calculator = () => {
 
   const handleDepositCalculation = async (type) => {
     if (!depositForm.resource) {
-      setError('Выберите ресурс')
+      setError('Выберите актив')
       return
     }
 
@@ -49,7 +49,7 @@ const Calculator = () => {
       let response
       if (type === 'earned') {
         if (!depositForm.amount || depositForm.amount <= 0) {
-          setError('Введите количество ресурсов')
+          setError('Введите количество')
           return
         }
         response = await publicAPI.calcDepositEarned({
@@ -64,7 +64,7 @@ const Calculator = () => {
         })
       } else {
         if (!depositForm.money || depositForm.money <= 0) {
-          setError('Введите сумму денег')
+          setError('Введите сумму')
           return
         }
         response = await publicAPI.calcDepositAmountForMoney({
@@ -88,7 +88,7 @@ const Calculator = () => {
 
   const handleWithdrawCalculation = async (type) => {
     if (!withdrawForm.resource) {
-      setError('Выберите ресурс')
+      setError('Выберите актив')
       return
     }
 
@@ -100,12 +100,12 @@ const Calculator = () => {
       let response
       if (type === 'cost') {
         if (!withdrawForm.amount || withdrawForm.amount <= 0) {
-          setError('Введите количество ресурсов')
+          setError('Введите количество')
           return
         }
         response = await publicAPI.calcWithdrawCost({
           resource: withdrawForm.resource,
-          withdraw_amount: parseInt(withdrawForm.amount)
+          amount: parseInt(withdrawForm.amount)
         })
         setResult({
           type: 'cost',
@@ -115,16 +115,16 @@ const Calculator = () => {
         })
       } else {
         if (!withdrawForm.money || withdrawForm.money <= 0) {
-          setError('Введите сумму денег')
+          setError('Введите сумму')
           return
         }
         response = await publicAPI.calcWithdrawAmountForMoney({
           resource: withdrawForm.resource,
-          available_money: parseFloat(withdrawForm.money)
+          target_money: parseFloat(withdrawForm.money)
         })
         setResult({
           type: 'amount',
-          value: response.data.max_amount,
+          value: response.data.available_amount,
           resource: withdrawForm.resource,
           money: withdrawForm.money
         })
@@ -144,45 +144,52 @@ const Calculator = () => {
 
   return (
     <div className="card">
-      <div className="flex items-center space-x-2 mb-6">
-        <CalculatorIcon size={24} className="text-yellow-400" />
-        <h2 className="text-xl font-bold text-white">Калькуляторы</h2>
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center space-x-3">
+          <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+            <CalculatorIcon size={20} className="text-primary" />
+          </div>
+          <div>
+            <h2 className="text-lg font-semibold text-text">Торговый калькулятор</h2>
+            <p className="text-text-secondary text-sm">Расчет операций с активами</p>
+          </div>
+        </div>
       </div>
 
       {/* Сообщения об ошибках и результатах */}
       {error && (
-        <div className="flex items-center space-x-2 p-3 bg-red-900 border border-red-700 rounded-lg mb-4">
-          <AlertCircle size={20} className="text-red-400" />
-          <span className="text-red-400">{error}</span>
+        <div className="flex items-center space-x-2 p-4 bg-danger/10 border border-danger/20 rounded-lg mb-4">
+          <AlertCircle size={20} className="text-danger" />
+          <span className="text-danger font-medium">{error}</span>
         </div>
       )}
 
       {result && (
-        <div className="flex items-center space-x-2 p-3 bg-green-900 border border-green-700 rounded-lg mb-4">
-          <CheckCircle size={20} className="text-green-400" />
-          <div className="text-green-400">
-            <div>
+        <div className="flex items-center space-x-2 p-4 bg-success/10 border border-success/20 rounded-lg mb-4">
+          <CheckCircle size={20} className="text-success" />
+          <div>
+            <div className="text-success font-medium">
               {result.type === 'earned' && (
                 <>За {result.amount} {result.resource} вы получите ${result.value.toFixed(2)}</>
               )}
               {result.type === 'amount' && activeTab === 'deposit' && (
-                <>Для получения ${result.money} нужно сдать {result.value} {result.resource}</>
+                <>Для получения ${result.money} нужно внести {result.value} {result.resource}</>
               )}
               {result.type === 'amount' && activeTab === 'withdraw' && (
-                <>За ${result.money} можно купить {result.value} {result.resource}</>
+                <>За ${result.money} вы получите {result.value} {result.resource}</>
               )}
               {result.type === 'cost' && (
-                <>За {result.amount} {result.resource} нужно заплатить ${result.value.toFixed(2)}</>
+                <>За {result.amount} {result.resource} стоимость составит ${result.value.toFixed(2)}</>
               )}
             </div>
             {activeTab === 'deposit' && (
-              <div className="text-yellow-300 text-sm mt-1">
-                ⚠️ Комиссия 5% уже учтена в расчете
+              <div className="text-warning text-sm mt-1 font-medium">
+                Комиссия 5% включена в расчет
               </div>
             )}
             {activeTab === 'withdraw' && (
-              <div className="text-green-300 text-sm mt-1">
-                ✅ Без комиссии • Поэтапная цена (большие объемы дороже)
+              <div className="text-success text-sm mt-1 font-medium">
+                Без комиссии • Динамическое ценообразование
               </div>
             )}
           </div>
@@ -190,177 +197,173 @@ const Calculator = () => {
       )}
 
       {/* Табы */}
-      <div className="flex space-x-1 mb-6 bg-gray-700 rounded-lg p-1">
+      <div className="flex space-x-2 p-1 bg-background rounded-lg mb-6">
         <button
           onClick={() => {
             setActiveTab('deposit')
             clearResults()
           }}
-          className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
+          className={`flex-1 px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
             activeTab === 'deposit'
-              ? 'bg-minecraft-green text-black'
-              : 'text-gray-300 hover:text-white'
+              ? 'bg-primary text-white shadow-sm'
+              : 'text-text-secondary hover:text-text hover:bg-surface'
           }`}
         >
-          Депозит
+          Покупка
         </button>
         <button
           onClick={() => {
             setActiveTab('withdraw')
             clearResults()
           }}
-          className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
+          className={`flex-1 px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
             activeTab === 'withdraw'
-              ? 'bg-minecraft-green text-black'
-              : 'text-gray-300 hover:text-white'
+              ? 'bg-primary text-white shadow-sm'
+              : 'text-text-secondary hover:text-text hover:bg-surface'
           }`}
         >
-          Снятие
+          Продажа
         </button>
       </div>
 
-      {/* Калькулятор депозита */}
+      {/* Калькулятор покупки */}
       {activeTab === 'deposit' && (
-        <div className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <select
-              value={depositForm.resource}
-              onChange={(e) => setDepositForm({...depositForm, resource: e.target.value})}
-              className="input-field"
-            >
-              <option value="">Выберите ресурс</option>
-              {resources.map(resource => (
-                <option key={resource.name} value={resource.name}>
-                  {resource.name} (${resource.price.toFixed(2)})
-                </option>
-              ))}
-            </select>
-            <input
-              type="number"
-              placeholder="Количество ресурсов"
-              value={depositForm.amount}
-              onChange={(e) => setDepositForm({...depositForm, amount: e.target.value})}
-              className="input-field"
-            />
-            <input
-              type="number"
-              step="0.01"
-              placeholder="Сумма денег"
-              value={depositForm.money}
-              onChange={(e) => setDepositForm({...depositForm, money: e.target.value})}
-              className="input-field"
-            />
+        <div className="space-y-8">
+          <div className="p-6 bg-background rounded-lg border border-border">
+            <h3 className="text-text font-medium mb-4">Расчет прибыли</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <select
+                value={depositForm.resource}
+                onChange={(e) => setDepositForm({...depositForm, resource: e.target.value})}
+                className="input-field"
+              >
+                <option value="">Выберите актив</option>
+                {resources.map(resource => (
+                  <option key={resource.name} value={resource.name}>
+                    {resource.name} (${resource.price.toFixed(2)})
+                  </option>
+                ))}
+              </select>
+              <input
+                type="number"
+                placeholder="Количество"
+                value={depositForm.amount}
+                onChange={(e) => setDepositForm({...depositForm, amount: e.target.value})}
+                className="input-field"
+              />
+              <button
+                onClick={() => handleDepositCalculation('earned')}
+                className="btn-success"
+                disabled={loading}
+              >
+                <DollarSign size={16} className="inline mr-2" />
+                Рассчитать прибыль
+              </button>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <button
-              onClick={() => handleDepositCalculation('earned')}
-              disabled={loading}
-              className="admin-button px-6 py-3 rounded text-white font-bold disabled:opacity-50"
-            >
-              {loading ? (
-                <div className="flex items-center justify-center space-x-2">
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  <span>Расчет...</span>
-                </div>
-              ) : (
-                <>
-                  <DollarSign size={16} className="inline mr-2" />
-                  Сколько денег за ресурсы
-                </>
-              )}
-            </button>
-
-            <button
-              onClick={() => handleDepositCalculation('amount')}
-              disabled={loading}
-              className="admin-button px-6 py-3 rounded text-white font-bold disabled:opacity-50"
-            >
-              {loading ? (
-                <div className="flex items-center justify-center space-x-2">
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  <span>Расчет...</span>
-                </div>
-              ) : (
-                <>
-                  <Package size={16} className="inline mr-2" />
-                  Сколько ресурсов за деньги
-                </>
-              )}
-            </button>
+          <div className="p-6 bg-background rounded-lg border border-border">
+            <h3 className="text-text font-medium mb-4">Расчет количества</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <select
+                value={depositForm.resource}
+                onChange={(e) => setDepositForm({...depositForm, resource: e.target.value})}
+                className="input-field"
+              >
+                <option value="">Выберите актив</option>
+                {resources.map(resource => (
+                  <option key={resource.name} value={resource.name}>
+                    {resource.name} (${resource.price.toFixed(2)})
+                  </option>
+                ))}
+              </select>
+              <input
+                type="number"
+                placeholder="Желаемая сумма $"
+                value={depositForm.money}
+                onChange={(e) => setDepositForm({...depositForm, money: e.target.value})}
+                className="input-field"
+              />
+              <button
+                onClick={() => handleDepositCalculation('amount')}
+                className="btn-success"
+                disabled={loading}
+              >
+                <Package size={16} className="inline mr-2" />
+                Рассчитать количество
+              </button>
+            </div>
           </div>
         </div>
       )}
 
-      {/* Калькулятор снятия */}
+      {/* Калькулятор продажи */}
       {activeTab === 'withdraw' && (
-        <div className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <select
-              value={withdrawForm.resource}
-              onChange={(e) => setWithdrawForm({...withdrawForm, resource: e.target.value})}
-              className="input-field"
-            >
-              <option value="">Выберите ресурс</option>
-              {resources.map(resource => (
-                <option key={resource.name} value={resource.name}>
-                  {resource.name} (${resource.price.toFixed(2)})
-                </option>
-              ))}
-            </select>
-            <input
-              type="number"
-              placeholder="Количество ресурсов"
-              value={withdrawForm.amount}
-              onChange={(e) => setWithdrawForm({...withdrawForm, amount: e.target.value})}
-              className="input-field"
-            />
-            <input
-              type="number"
-              step="0.01"
-              placeholder="Сумма денег"
-              value={withdrawForm.money}
-              onChange={(e) => setWithdrawForm({...withdrawForm, money: e.target.value})}
-              className="input-field"
-            />
+        <div className="space-y-8">
+          <div className="p-6 bg-background rounded-lg border border-border">
+            <h3 className="text-text font-medium mb-4">Расчет стоимости</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <select
+                value={withdrawForm.resource}
+                onChange={(e) => setWithdrawForm({...withdrawForm, resource: e.target.value})}
+                className="input-field"
+              >
+                <option value="">Выберите актив</option>
+                {resources.map(resource => (
+                  <option key={resource.name} value={resource.name}>
+                    {resource.name} (${resource.price.toFixed(2)})
+                  </option>
+                ))}
+              </select>
+              <input
+                type="number"
+                placeholder="Количество"
+                value={withdrawForm.amount}
+                onChange={(e) => setWithdrawForm({...withdrawForm, amount: e.target.value})}
+                className="input-field"
+              />
+              <button
+                onClick={() => handleWithdrawCalculation('cost')}
+                className="btn-primary"
+                disabled={loading}
+              >
+                <DollarSign size={16} className="inline mr-2" />
+                Рассчитать стоимость
+              </button>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <button
-              onClick={() => handleWithdrawCalculation('cost')}
-              disabled={loading}
-              className="bg-red-600 hover:bg-red-700 px-6 py-3 rounded text-white font-bold transition-colors disabled:opacity-50"
-            >
-              {loading ? (
-                <div className="flex items-center justify-center space-x-2">
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  <span>Расчет...</span>
-                </div>
-              ) : (
-                <>
-                  <DollarSign size={16} className="inline mr-2" />
-                  Сколько стоит получить ресурсы
-                </>
-              )}
-            </button>
-
-            <button
-              onClick={() => handleWithdrawCalculation('amount')}
-              disabled={loading}
-              className="bg-red-600 hover:bg-red-700 px-6 py-3 rounded text-white font-bold transition-colors disabled:opacity-50"
-            >
-              {loading ? (
-                <div className="flex items-center justify-center space-x-2">
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  <span>Расчет...</span>
-                </div>
-              ) : (
-                <>
-                  <Package size={16} className="inline mr-2" />
-                  Сколько ресурсов за деньги
-                </>
-              )}
-            </button>
+          <div className="p-6 bg-background rounded-lg border border-border">
+            <h3 className="text-text font-medium mb-4">Расчет количества</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <select
+                value={withdrawForm.resource}
+                onChange={(e) => setWithdrawForm({...withdrawForm, resource: e.target.value})}
+                className="input-field"
+              >
+                <option value="">Выберите актив</option>
+                {resources.map(resource => (
+                  <option key={resource.name} value={resource.name}>
+                    {resource.name} (${resource.price.toFixed(2)})
+                  </option>
+                ))}
+              </select>
+              <input
+                type="number"
+                placeholder="Желаемая сумма $"
+                value={withdrawForm.money}
+                onChange={(e) => setWithdrawForm({...withdrawForm, money: e.target.value})}
+                className="input-field"
+              />
+              <button
+                onClick={() => handleWithdrawCalculation('amount')}
+                className="btn-primary"
+                disabled={loading}
+              >
+                <Package size={16} className="inline mr-2" />
+                Рассчитать количество
+              </button>
+            </div>
           </div>
         </div>
       )}

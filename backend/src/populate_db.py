@@ -9,16 +9,14 @@ from src.resources.service import ResourceService, ResourceHistoryService
 from src.resources.calc import ResourceCalculator
 
 client_balances = {
-    "sunny": 8,
-    "dima": 0
 }
 
 bank_resources = {
-    "Незеритовый слиток": 9,
-    "Лазурит": 77 * 9,
-    "Редстоун": 93 * 9,
-    "Золотой слиток": 51 * 9 + 6,
-    "Жемчуг эндера": 72,
+    "Незеритовый слиток": 10,
+    "Лазурит": 695,
+    "Редстоун": (29 + 64) * 9 + 5,
+    "Золотой слиток": 52 * 9 + 7,
+    "Жемчуг эндера": 16 * 3 + 8,
     "Алмаз": 14 * 9 + 1
 }
 

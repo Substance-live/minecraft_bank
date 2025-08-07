@@ -27,7 +27,7 @@ def main():
         print("База данных уже заполнена. Пропускаем заполнение.")
         return
     
-    UserService.add(UserRegisterSchema(login="root", password="root", role=UserStatus.admin))
+    UserService.add(UserRegisterSchema(login="admin", password="mama_polyka_sh", role=UserStatus.admin))
     for name, balance in client_balances.items():
         ClientBalanceService.add(ClientBalanceSchema(name=name, balance=balance))
     for name, amount in bank_resources.items():

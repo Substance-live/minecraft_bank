@@ -1,0 +1,14 @@
+stages:
+  - build
+  - deploy
+
+build-job:
+  stage: build
+  script:
+    - docker-compose build
+
+deploy-job:
+  stage: deploy
+  script:
+    - docker-compose up -d
+    - docker image prune -f --filter "dangling=true"

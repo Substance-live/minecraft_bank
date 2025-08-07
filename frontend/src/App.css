@@ -1,0 +1,79 @@
+/* Дополнительные стили для Minecraft тематики */
+.minecraft-text {
+  text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.8);
+}
+
+.minecraft-border {
+  border: 3px solid #555;
+  box-shadow: inset 0 0 0 1px #aaa, inset 0 0 0 2px #555;
+}
+
+.resource-card {
+  background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+  border: 2px solid #4a5568;
+  transition: all 0.3s ease;
+}
+
+.resource-card:hover {
+  border-color: #54c754;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(84, 199, 84, 0.3);
+}
+
+.client-card {
+  background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+  border: 2px solid #4a5568;
+  transition: all 0.3s ease;
+}
+
+.client-card:hover {
+  border-color: #3182ce;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(49, 130, 206, 0.3);
+}
+
+.admin-button {
+  background: linear-gradient(135deg, #54c754 0%, #38a169 100%);
+  border: 2px solid #2f855a;
+  transition: all 0.3s ease;
+}
+
+.admin-button:hover {
+  background: linear-gradient(135deg, #38a169 0%, #2f855a 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(84, 199, 84, 0.4);
+}
+
+/* Анимации */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Скроллбар */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #2d3748;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4a5568;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #54c754;
+} 

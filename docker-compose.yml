@@ -1,0 +1,25 @@
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: minecraft-backend-container:latest
+    networks:
+      - backend_network
+    expose:
+      - "8000"
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: minecraft-frontend-container:latest
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - backend_network
+networks:
+  backend_network:
+    external: true

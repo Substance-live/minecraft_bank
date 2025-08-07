@@ -22,7 +22,7 @@ const ResourceCard = ({ resource, onViewHistory }) => {
           </div>
           <div className="p-2 bg-primary/10 rounded-full">
             <BarChart3 size={18} className="text-primary" />
-          </div>
+        </div>
         </div>
       </div>
       
@@ -31,8 +31,8 @@ const ResourceCard = ({ resource, onViewHistory }) => {
           <span className="text-text-secondary text-sm font-medium">Цена</span>
           <div className="flex items-center space-x-1 mt-1">
             <span className="text-text font-semibold text-lg">
-              ${resource.price.toFixed(2)}
-            </span>
+            ${resource.price.toFixed(2)}
+          </span>
             <span className="text-success text-sm">+2.4%</span>
           </div>
         </div>
@@ -41,8 +41,8 @@ const ResourceCard = ({ resource, onViewHistory }) => {
           <span className="text-text-secondary text-sm font-medium">Объем</span>
           <div className="flex items-center space-x-1 mt-1">
             <span className="text-text font-semibold text-lg">
-              {resource.amount.toLocaleString()}
-            </span>
+            {resource.amount.toLocaleString()}
+          </span>
           </div>
         </div>
       </div>

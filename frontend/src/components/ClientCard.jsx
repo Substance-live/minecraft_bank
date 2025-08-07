@@ -38,7 +38,7 @@ const ClientCard = ({ client, onViewDeposits, onViewCredits }) => {
             <DollarSign size={16} className="text-primary" />
             <span className="text-text font-semibold text-lg">
               {client.balance.toFixed(2)}
-            </span>
+          </span>
           </div>
         </div>
       </div>

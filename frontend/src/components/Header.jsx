@@ -31,12 +31,6 @@ const Header = () => {
               >
                 Торговля
               </Link>
-              <Link
-                to="/analytics"
-                className="text-text-secondary hover:text-text px-3 py-2 text-sm font-medium transition-colors"
-              >
-                Аналитика
-              </Link>
             </div>
           </div>
 
@@ -53,17 +47,17 @@ const Header = () => {
               <>
                 <Link
                   to="/admin"
-                  className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors"
+                  className="flex items-center space-x-2 text-text-secondary hover:text-text transition-colors"
                 >
-                  <Settings size={20} />
-                  <span>Админ панель</span>
+                  <Settings size={18} />
+                  <span className="text-sm font-medium">Админ панель</span>
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="flex items-center space-x-2 text-gray-300 hover:text-red-400 transition-colors"
+                  className="flex items-center space-x-2 text-text-secondary hover:text-danger transition-colors"
                 >
-                  <LogOut size={20} />
-                  <span>Выйти</span>
+                  <LogOut size={18} />
+                  <span className="text-sm font-medium">Выйти</span>
                 </button>
               </>
             )}

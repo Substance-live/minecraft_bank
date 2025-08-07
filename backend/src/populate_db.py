@@ -9,15 +9,16 @@ from src.resources.service import ResourceService, ResourceHistoryService
 from src.resources.calc import ResourceCalculator
 
 client_balances = {
+    "sunny": 902.12
 }
 
 bank_resources = {
     "Незеритовый слиток": 10,
     "Лазурит": 695,
-    "Редстоун": (29 + 64) * 9 + 5,
-    "Золотой слиток": 52 * 9 + 7,
-    "Жемчуг эндера": 16 * 3 + 8,
-    "Алмаз": 14 * 9 + 1
+    "Редстоун": 1802,
+    "Золотой слиток": 802,
+    "Жемчуг эндера": 56,
+    "Алмаз": 127
 }
 
 def main():

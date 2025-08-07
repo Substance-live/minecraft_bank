@@ -105,7 +105,7 @@ const Calculator = () => {
         }
         response = await publicAPI.calcWithdrawCost({
           resource: withdrawForm.resource,
-          amount: parseInt(withdrawForm.amount)
+          withdraw_amount: parseInt(withdrawForm.amount)
         })
         setResult({
           type: 'cost',
@@ -120,11 +120,11 @@ const Calculator = () => {
         }
         response = await publicAPI.calcWithdrawAmountForMoney({
           resource: withdrawForm.resource,
-          target_money: parseFloat(withdrawForm.money)
+          available_money: parseFloat(withdrawForm.money)
         })
         setResult({
           type: 'amount',
-          value: response.data.available_amount,
+          value: response.data.max_amount,
           resource: withdrawForm.resource,
           money: withdrawForm.money
         })
@@ -167,7 +167,7 @@ const Calculator = () => {
       {result && (
         <div className="flex items-center space-x-2 p-4 bg-success/10 border border-success/20 rounded-lg mb-4">
           <CheckCircle size={20} className="text-success" />
-          <div>
+            <div>
             <div className="text-success font-medium">
               {result.type === 'earned' && (
                 <>За {result.amount} {result.resource} вы получите ${result.value.toFixed(2)}</>
@@ -231,26 +231,26 @@ const Calculator = () => {
         <div className="space-y-8">
           <div className="p-6 bg-background rounded-lg border border-border">
             <h3 className="text-text font-medium mb-4">Расчет прибыли</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <select
-                value={depositForm.resource}
-                onChange={(e) => setDepositForm({...depositForm, resource: e.target.value})}
-                className="input-field"
-              >
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <select
+              value={depositForm.resource}
+              onChange={(e) => setDepositForm({...depositForm, resource: e.target.value})}
+              className="input-field"
+            >
                 <option value="">Выберите актив</option>
-                {resources.map(resource => (
-                  <option key={resource.name} value={resource.name}>
-                    {resource.name} (${resource.price.toFixed(2)})
-                  </option>
-                ))}
-              </select>
-              <input
-                type="number"
+              {resources.map(resource => (
+                <option key={resource.name} value={resource.name}>
+                  {resource.name} (${resource.price.toFixed(2)})
+                </option>
+              ))}
+            </select>
+            <input
+              type="number"
                 placeholder="Количество"
-                value={depositForm.amount}
-                onChange={(e) => setDepositForm({...depositForm, amount: e.target.value})}
-                className="input-field"
-              />
+              value={depositForm.amount}
+              onChange={(e) => setDepositForm({...depositForm, amount: e.target.value})}
+              className="input-field"
+            />
               <button
                 onClick={() => handleDepositCalculation('earned')}
                 className="btn-success"
@@ -277,21 +277,21 @@ const Calculator = () => {
                   </option>
                 ))}
               </select>
-              <input
-                type="number"
+            <input
+              type="number"
                 placeholder="Желаемая сумма $"
-                value={depositForm.money}
-                onChange={(e) => setDepositForm({...depositForm, money: e.target.value})}
-                className="input-field"
-              />
-              <button
-                onClick={() => handleDepositCalculation('amount')}
+              value={depositForm.money}
+              onChange={(e) => setDepositForm({...depositForm, money: e.target.value})}
+              className="input-field"
+            />
+            <button
+              onClick={() => handleDepositCalculation('amount')}
                 className="btn-success"
-                disabled={loading}
+              disabled={loading}
               >
-                <Package size={16} className="inline mr-2" />
+                  <Package size={16} className="inline mr-2" />
                 Рассчитать количество
-              </button>
+            </button>
             </div>
           </div>
         </div>
@@ -302,26 +302,26 @@ const Calculator = () => {
         <div className="space-y-8">
           <div className="p-6 bg-background rounded-lg border border-border">
             <h3 className="text-text font-medium mb-4">Расчет стоимости</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <select
-                value={withdrawForm.resource}
-                onChange={(e) => setWithdrawForm({...withdrawForm, resource: e.target.value})}
-                className="input-field"
-              >
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <select
+              value={withdrawForm.resource}
+              onChange={(e) => setWithdrawForm({...withdrawForm, resource: e.target.value})}
+              className="input-field"
+            >
                 <option value="">Выберите актив</option>
-                {resources.map(resource => (
-                  <option key={resource.name} value={resource.name}>
-                    {resource.name} (${resource.price.toFixed(2)})
-                  </option>
-                ))}
-              </select>
-              <input
-                type="number"
+              {resources.map(resource => (
+                <option key={resource.name} value={resource.name}>
+                  {resource.name} (${resource.price.toFixed(2)})
+                </option>
+              ))}
+            </select>
+            <input
+              type="number"
                 placeholder="Количество"
-                value={withdrawForm.amount}
-                onChange={(e) => setWithdrawForm({...withdrawForm, amount: e.target.value})}
-                className="input-field"
-              />
+              value={withdrawForm.amount}
+              onChange={(e) => setWithdrawForm({...withdrawForm, amount: e.target.value})}
+              className="input-field"
+            />
               <button
                 onClick={() => handleWithdrawCalculation('cost')}
                 className="btn-primary"
@@ -348,21 +348,21 @@ const Calculator = () => {
                   </option>
                 ))}
               </select>
-              <input
-                type="number"
+            <input
+              type="number"
                 placeholder="Желаемая сумма $"
-                value={withdrawForm.money}
-                onChange={(e) => setWithdrawForm({...withdrawForm, money: e.target.value})}
-                className="input-field"
-              />
-              <button
-                onClick={() => handleWithdrawCalculation('amount')}
+              value={withdrawForm.money}
+              onChange={(e) => setWithdrawForm({...withdrawForm, money: e.target.value})}
+              className="input-field"
+            />
+            <button
+              onClick={() => handleWithdrawCalculation('amount')}
                 className="btn-primary"
-                disabled={loading}
+              disabled={loading}
               >
-                <Package size={16} className="inline mr-2" />
+                  <Package size={16} className="inline mr-2" />
                 Рассчитать количество
-              </button>
+            </button>
             </div>
           </div>
         </div>

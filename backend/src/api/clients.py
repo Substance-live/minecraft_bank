@@ -27,7 +27,7 @@ def register_card(request: RegisterCardRequest):
     from src.resources.service import ResourceHistoryService
     updated_clients = ClientBalanceService.all()
     ResourceHistoryService.update_all_prices_history(updated_clients)
-    return {"status": "created", "name": request.name, "balance": request.initial_amount}
+    return {"status": "created", "name": request.name, "balance": request.initial_amount} 
 
 @router.get("/{client_name}/deposits", response_model=DepositResponse)
 def get_client_deposits_public(client_name: str):

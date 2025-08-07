@@ -160,46 +160,46 @@ const PriceHistoryChart = ({ resourceName, history, onClose }) => {
                 <p className="text-text-secondary text-sm">{resourceName}</p>
               </div>
             </div>
-            <button
-              onClick={onClose}
+          <button
+            onClick={onClose}
               className="text-text-secondary hover:text-text transition-colors"
-            >
+          >
               <X size={20} />
-            </button>
-          </div>
+          </button>
+        </div>
 
-          {/* Статистика */}
+        {/* Статистика */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
             <div className="stat-card">
               <span className="stat-title">Текущая цена</span>
               <span className="stat-value">${currentPrice.toFixed(2)}</span>
               <span className={`text-sm font-medium mt-1 ${priceChange >= 0 ? 'text-success' : 'text-danger'}`}>
-                {priceChange >= 0 ? '+' : ''}{priceChange.toFixed(2)} ({priceChangePercent >= 0 ? '+' : ''}{priceChangePercent.toFixed(1)}%)
+              {priceChange >= 0 ? '+' : ''}{priceChange.toFixed(2)} ({priceChangePercent >= 0 ? '+' : ''}{priceChangePercent.toFixed(1)}%)
               </span>
             </div>
 
             <div className="stat-card">
               <span className="stat-title">Минимум</span>
               <span className="stat-value">${minPrice.toFixed(2)}</span>
-            </div>
+          </div>
 
             <div className="stat-card">
               <span className="stat-title">Максимум</span>
               <span className="stat-value">${maxPrice.toFixed(2)}</span>
-            </div>
+          </div>
 
             <div className="stat-card">
               <span className="stat-title">Среднее</span>
               <span className="stat-value">${avgPrice.toFixed(2)}</span>
-            </div>
           </div>
+        </div>
 
-          {/* График */}
+        {/* График */}
           <div className="h-[400px] bg-background rounded-lg border border-border p-4">
             <Line data={chartData} options={options} />
-          </div>
+        </div>
 
-          {/* Информация */}
+        {/* Информация */}
           <div className="mt-4 text-center">
             <p className="text-text-secondary text-sm">
               Нажмите на точки графика для просмотра деталей

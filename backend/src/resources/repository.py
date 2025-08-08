@@ -57,3 +57,11 @@ class ResourceRepository:
             query = select(ResourcePriceHistoryOrm).filter_by(resource_name=resource_name).order_by(ResourcePriceHistoryOrm.timestamp.desc()).limit(limit)
             result = session.scalars(query)
             return result.all()
+
+    @classmethod
+    def clear_all_price_history(cls) -> int:
+        with Session_maker() as session:
+            query = delete(ResourcePriceHistoryOrm)
+            ret = session.execute(query)
+            session.commit()
+            return ret.rowcount

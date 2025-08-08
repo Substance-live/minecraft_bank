@@ -94,6 +94,10 @@ export const adminAPI = {
   getClientCredits: (clientName) => api.get(`/admin/client-credits/${clientName}`),
   processOverdueCredits: () => api.post('/admin/process-overdue-credits'),
   earlyRepayCredit: (creditId) => api.post(`/admin/early-repay-credit/${creditId}`),
+  
+  // Системные настройки
+  updateMarketNormalization: (data) => api.post('/admin/update-market-normalization', data),
+  clearPriceHistory: () => api.post('/admin/clear-price-history'),
 }
 
 export default api 

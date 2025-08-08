@@ -36,9 +36,9 @@ const ClientCard = ({ client, onViewDeposits, onViewCredits }) => {
           <span className="text-text-secondary font-medium">Баланс</span>
           <div className="flex items-center space-x-2">
             <DollarSign size={16} className="text-primary" />
-            <span className="text-text font-semibold text-lg">
-              {client.balance.toFixed(2)}
-          </span>
+                        <span className="text-text font-semibold text-lg">
+              ₴{client.balance.toFixed(2)}
+            </span>
           </div>
         </div>
       </div>

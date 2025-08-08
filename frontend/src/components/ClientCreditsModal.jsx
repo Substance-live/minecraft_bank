@@ -144,7 +144,7 @@ const ClientCreditsModal = ({ clientName, isOpen, onClose }) => {
                     <div>
                       <span className="text-gray-400">Сумма:</span>
                       <span className="text-red-400 font-bold ml-2">
-                        ${credit.amount?.toFixed(2) || '0.00'}
+                        ₴{credit.amount?.toFixed(2) || '0.00'}
                       </span>
                     </div>
                     <div>
@@ -162,7 +162,7 @@ const ClientCreditsModal = ({ clientName, isOpen, onClose }) => {
                     <div>
                       <span className="text-gray-400">Проценты:</span>
                       <span className="text-red-400 font-medium ml-2">
-                        ${credit.interest_owed?.toFixed(2) || '0.00'}
+                        ₴{credit.interest_owed?.toFixed(2) || '0.00'}
                       </span>
                     </div>
                   </div>

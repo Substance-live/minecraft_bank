@@ -68,3 +68,8 @@ class ResourceHistoryService:
         for res in resources:
             price = ResourceCalculator.get_resource_price(res.name, res.amount, total_dollars)
             cls.add_price_history(res.name, price)
+
+    @classmethod
+    def clear_all_history(cls) -> None:
+        """Очищает всю историю цен"""
+        ResourceRepository.clear_all_price_history()

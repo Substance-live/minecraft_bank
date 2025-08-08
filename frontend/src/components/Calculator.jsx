@@ -170,16 +170,16 @@ const Calculator = () => {
             <div>
             <div className="text-success font-medium">
               {result.type === 'earned' && (
-                <>За {result.amount} {result.resource} вы получите ${result.value.toFixed(2)}</>
+                <>За {result.amount} {result.resource} вы получите ₴{result.value.toFixed(2)}</>
               )}
               {result.type === 'amount' && activeTab === 'deposit' && (
-                <>Для получения ${result.money} нужно внести {result.value} {result.resource}</>
+                <>Для получения ₴{result.money} нужно внести {result.value} {result.resource}</>
               )}
               {result.type === 'amount' && activeTab === 'withdraw' && (
-                <>За ${result.money} вы получите {result.value} {result.resource}</>
+                <>За ₴{result.money} вы получите {result.value} {result.resource}</>
               )}
               {result.type === 'cost' && (
-                <>За {result.amount} {result.resource} стоимость составит ${result.value.toFixed(2)}</>
+                <>За {result.amount} {result.resource} стоимость составит ₴{result.value.toFixed(2)}</>
               )}
             </div>
             {activeTab === 'deposit' && (
@@ -277,13 +277,13 @@ const Calculator = () => {
                   </option>
                 ))}
               </select>
-            <input
-              type="number"
-                placeholder="Желаемая сумма $"
-              value={depositForm.money}
-              onChange={(e) => setDepositForm({...depositForm, money: e.target.value})}
-              className="input-field"
-            />
+                          <input
+                type="number"
+                placeholder="Желаемая сумма ₴"
+                value={depositForm.money}
+                onChange={(e) => setDepositForm({...depositForm, money: e.target.value})}
+                className="input-field"
+              />
             <button
               onClick={() => handleDepositCalculation('amount')}
                 className="btn-success"
@@ -348,13 +348,13 @@ const Calculator = () => {
                   </option>
                 ))}
               </select>
-            <input
-              type="number"
-                placeholder="Желаемая сумма $"
-              value={withdrawForm.money}
-              onChange={(e) => setWithdrawForm({...withdrawForm, money: e.target.value})}
-              className="input-field"
-            />
+                          <input
+                type="number"
+                placeholder="Желаемая сумма ₴"
+                value={withdrawForm.money}
+                onChange={(e) => setWithdrawForm({...withdrawForm, money: e.target.value})}
+                className="input-field"
+              />
             <button
               onClick={() => handleWithdrawCalculation('amount')}
                 className="btn-primary"

@@ -40,6 +40,9 @@ class UpdateBaseRateRequest(BaseModel):
 class UpdateBankBalanceRequest(BaseModel):
     new_balance: float
 
+class UpdateMarketNormalizationRequest(BaseModel):
+    market_normalization: float
+
 class CreateDepositRequest(BaseModel):
     client_name: str
     amount: float
@@ -325,4 +328,31 @@ def early_repay_credit(credit_id: int, user=Security(get_current_user)):
         result = CreditService.early_repay_credit(credit_id)
         return {"status": "ok", "credit": result}
     except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@router.post("/update-market-normalization")
+def update_market_normalization(request: UpdateMarketNormalizationRequest, user=Security(get_current_user)):
+    if user.role != "admin":
+        raise HTTPException(status_code=403, detail="Только админ может изменять настройки рынка")
+    try:
+        from src.resources.calc import ResourceCalculator
+        old_value = ResourceCalculator.MARKET_NORMALIZATION
+        ResourceCalculator.MARKET_NORMALIZATION = request.market_normalization
+        
+        # Обновляем историю цен для всех ресурсов с новыми настройками
+        clients = ClientBalanceService.all()
+        ResourceHistoryService.update_all_prices_history(clients)
+        
+        return {"status": "ok", "old_value": old_value, "new_value": request.market_normalization}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@router.post("/clear-price-history")
+def clear_price_history(user=Security(get_current_user)):
+    if user.role != "admin":
+        raise HTTPException(status_code=403, detail="Только админ может очищать историю цен")
+    try:
+        ResourceHistoryService.clear_all_history()
+        return {"status": "ok", "message": "История цен очищена"}
+    except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))

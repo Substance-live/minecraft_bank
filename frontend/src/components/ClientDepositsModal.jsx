@@ -161,9 +161,9 @@ const ClientDepositsModal = ({ clientName, isOpen, onClose }) => {
                     </div>
                     <div>
                       <span className="text-gray-400">Проценты:</span>
-                      <span className="text-minecraft-green font-medium ml-2">
-                        ${deposit.interest_earned?.toFixed(2) || '0.00'}
-                      </span>
+                                                   <span className="text-minecraft-green font-medium ml-2">
+                               ₴{deposit.interest_earned?.toFixed(2) || '0.00'}
+                             </span>
                     </div>
                   </div>
                   

@@ -98,7 +98,7 @@ const PriceHistoryChart = ({ resourceName, history, onClose }) => {
         displayColors: false,
         callbacks: {
           label: function(context) {
-            return `Цена: $${context.parsed.y.toFixed(2)}`
+            return `Цена: ₴${context.parsed.y.toFixed(2)}`
           }
         }
       }
@@ -123,7 +123,7 @@ const PriceHistoryChart = ({ resourceName, history, onClose }) => {
         ticks: {
           color: '#94a3b8', // text-secondary
           callback: function(value) {
-            return '$' + value.toFixed(2)
+            return '₴' + value.toFixed(2)
           },
           font: {
             size: 11
@@ -170,28 +170,28 @@ const PriceHistoryChart = ({ resourceName, history, onClose }) => {
 
         {/* Статистика */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-            <div className="stat-card">
+                        <div className="stat-card">
               <span className="stat-title">Текущая цена</span>
-              <span className="stat-value">${currentPrice.toFixed(2)}</span>
+              <span className="stat-value">₴{currentPrice.toFixed(2)}</span>
               <span className={`text-sm font-medium mt-1 ${priceChange >= 0 ? 'text-success' : 'text-danger'}`}>
-              {priceChange >= 0 ? '+' : ''}{priceChange.toFixed(2)} ({priceChangePercent >= 0 ? '+' : ''}{priceChangePercent.toFixed(1)}%)
+                {priceChange >= 0 ? '+' : ''}{priceChange.toFixed(2)} ({priceChangePercent >= 0 ? '+' : ''}{priceChangePercent.toFixed(1)}%)
               </span>
             </div>
 
             <div className="stat-card">
               <span className="stat-title">Минимум</span>
-              <span className="stat-value">${minPrice.toFixed(2)}</span>
-          </div>
+              <span className="stat-value">₴{minPrice.toFixed(2)}</span>
+            </div>
 
             <div className="stat-card">
               <span className="stat-title">Максимум</span>
-              <span className="stat-value">${maxPrice.toFixed(2)}</span>
-          </div>
+              <span className="stat-value">₴{maxPrice.toFixed(2)}</span>
+            </div>
 
             <div className="stat-card">
               <span className="stat-title">Среднее</span>
-              <span className="stat-value">${avgPrice.toFixed(2)}</span>
-          </div>
+              <span className="stat-value">₴{avgPrice.toFixed(2)}</span>
+            </div>
         </div>
 
         {/* График */}

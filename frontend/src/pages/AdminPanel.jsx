@@ -69,6 +69,9 @@ const AdminPanel = () => {
     days: '10',
     interest_rate: '10.0'
   })
+  const [marketNormalizationForm, setMarketNormalizationForm] = useState({
+    market_normalization: '100'
+  })
 
   const fetchData = async () => {
     try {
@@ -330,6 +333,35 @@ const AdminPanel = () => {
     }
   }
 
+  const handleUpdateMarketNormalization = async () => {
+    if (!marketNormalizationForm.market_normalization || marketNormalizationForm.market_normalization <= 0) {
+      showMessage('error', 'Введите корректное значение нормализации рынка')
+      return
+    }
+    try {
+      const response = await adminAPI.updateMarketNormalization({
+        market_normalization: parseFloat(marketNormalizationForm.market_normalization)
+      })
+      showMessage('success', `Нормализация рынка обновлена: ${response.data.old_value} → ${response.data.new_value}`)
+      setMarketNormalizationForm({ market_normalization: response.data.new_value.toString() })
+      fetchData()
+    } catch (err) {
+      showMessage('error', err.response?.data?.detail || 'Ошибка обновления нормализации рынка')
+    }
+  }
+
+  const handleClearPriceHistory = async () => {
+    if (!confirm('Вы уверены, что хотите очистить всю историю цен? Это действие нельзя отменить.')) {
+      return
+    }
+    try {
+      await adminAPI.clearPriceHistory()
+      showMessage('success', 'История цен успешно очищена')
+    } catch (err) {
+      showMessage('error', err.response?.data?.detail || 'Ошибка очистки истории цен')
+    }
+  }
+
 
 
   useEffect(() => {
@@ -384,12 +416,12 @@ const AdminPanel = () => {
       {/* Баланс банка */}
       <div className="card">
         <div className="flex items-center space-x-2 mb-4">
-          <DollarSign size={24} className="text-minecraft-green" />
+          <DollarSign size={24} className="text-primary" />
           <h2 className="text-xl font-bold text-white">Баланс банка</h2>
         </div>
         <div className="text-center mb-4">
-          <div className="text-3xl font-bold text-minecraft-green">
-            ${bankBalance.toLocaleString()}
+          <div className="text-3xl font-bold text-primary">
+            ₴{bankBalance.toLocaleString()}
           </div>
           <p className="text-gray-400 text-sm mt-2">
             Общий капитал банка для проведения операций
@@ -410,7 +442,7 @@ const AdminPanel = () => {
             />
             <button
               onClick={handleBankBalanceUpdate}
-              className="admin-button px-6 py-2 rounded text-white font-bold"
+              className="btn-primary"
             >
               <Edit size={16} className="inline mr-2" />
               Обновить
@@ -425,7 +457,7 @@ const AdminPanel = () => {
       {/* Транзакции */}
       <div className="card">
         <div className="flex items-center space-x-2 mb-6">
-          <DollarSign size={24} className="text-minecraft-green" />
+          <DollarSign size={24} className="text-primary" />
           <h2 className="text-xl font-bold text-white">Транзакции</h2>
         </div>
         
@@ -459,14 +491,14 @@ const AdminPanel = () => {
         <div className="flex space-x-4">
           <button
             onClick={() => handleTransaction('deposit')}
-            className="admin-button px-6 py-2 rounded text-white font-bold"
+            className="btn-success"
           >
             <Plus size={16} className="inline mr-2" />
             Депозит
           </button>
           <button
             onClick={() => handleTransaction('withdraw')}
-            className="bg-red-600 hover:bg-red-700 px-6 py-2 rounded text-white font-bold transition-colors"
+            className="btn-primary"
           >
             <Minus size={16} className="inline mr-2" />
             Снятие
@@ -477,7 +509,7 @@ const AdminPanel = () => {
       {/* Управление ресурсами */}
       <div className="card">
         <div className="flex items-center space-x-2 mb-6">
-          <Package size={24} className="text-minecraft-green" />
+          <Package size={24} className="text-primary" />
           <h2 className="text-xl font-bold text-white">Управление ресурсами</h2>
         </div>
         
@@ -509,28 +541,28 @@ const AdminPanel = () => {
         <div className="flex space-x-4">
           <button
             onClick={() => handleResourceOperation('add')}
-            className="admin-button px-6 py-2 rounded text-white font-bold"
+            className="btn-success"
           >
             <Plus size={16} className="inline mr-2" />
             Добавить
           </button>
           <button
             onClick={() => handleResourceOperation('update')}
-            className="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded text-white font-bold transition-colors"
+            className="btn-primary"
           >
             <Edit size={16} className="inline mr-2" />
             Обновить количество
           </button>
           <button
             onClick={() => handleResourceOperation('update_rate')}
-            className="bg-yellow-600 hover:bg-yellow-700 px-6 py-2 rounded text-white font-bold transition-colors"
+            className="btn-warning"
           >
             <DollarSign size={16} className="inline mr-2" />
             Обновить курс
           </button>
           <button
             onClick={() => handleResourceOperation('delete')}
-            className="bg-red-600 hover:bg-red-700 px-6 py-2 rounded text-white font-bold transition-colors"
+            className="btn-danger"
           >
             <Trash2 size={16} className="inline mr-2" />
             Удалить
@@ -544,7 +576,7 @@ const AdminPanel = () => {
             {Object.entries(baseRates).map(([resource, rate]) => (
               <div key={resource} className="text-center p-2 bg-gray-600 rounded">
                 <div className="text-sm text-gray-300">{resource}</div>
-                <div className="text-minecraft-green font-bold">{rate}</div>
+                <div className="text-primary font-bold">{rate}</div>
               </div>
             ))}
           </div>
@@ -557,7 +589,7 @@ const AdminPanel = () => {
       {/* Управление вкладами */}
       <div className="card">
         <div className="flex items-center space-x-2 mb-6">
-          <DollarSign size={24} className="text-minecraft-green" />
+          <DollarSign size={24} className="text-success" />
           <h2 className="text-xl font-bold text-white">Управление вкладами</h2>
         </div>
         
@@ -600,20 +632,20 @@ const AdminPanel = () => {
         </div>
         
         <div className="flex space-x-4">
-          <button
-            onClick={handleCreateDeposit}
-            className="admin-button px-6 py-2 rounded text-white font-bold"
-          >
-            <Plus size={16} className="inline mr-2" />
-            Создать вклад
-          </button>
-          <button
-            onClick={handleProcessExpiredDeposits}
-            className="bg-yellow-600 hover:bg-yellow-700 px-6 py-2 rounded text-white font-bold transition-colors"
-          >
-            <Clock size={16} className="inline mr-2" />
-            Обработать просроченные
-          </button>
+                      <button
+              onClick={handleCreateDeposit}
+              className="btn-success"
+            >
+              <Plus size={16} className="inline mr-2" />
+              Создать вклад
+            </button>
+            <button
+              onClick={handleProcessExpiredDeposits}
+              className="btn-warning"
+            >
+              <Clock size={16} className="inline mr-2" />
+              Обработать просроченные
+            </button>
         </div>
         
         <div className="mt-4 p-3 bg-gray-800 rounded-lg">
@@ -632,7 +664,7 @@ const AdminPanel = () => {
       {/* Управление кредитами */}
       <div className="card">
         <div className="flex items-center space-x-2 mb-6">
-          <DollarSign size={24} className="text-red-400" />
+          <DollarSign size={24} className="text-danger" />
           <h2 className="text-xl font-bold text-white">Управление кредитами</h2>
         </div>
         
@@ -677,14 +709,14 @@ const AdminPanel = () => {
         <div className="flex space-x-4">
           <button
             onClick={handleCreateCredit}
-            className="admin-button px-6 py-2 rounded text-white font-bold"
+            className="btn-primary"
           >
             <Plus size={16} className="inline mr-2" />
             Создать кредит
           </button>
           <button
             onClick={handleProcessOverdueCredits}
-            className="bg-red-600 hover:bg-red-700 px-6 py-2 rounded text-white font-bold transition-colors"
+            className="btn-danger"
           >
             <Clock size={16} className="inline mr-2" />
             Обработать просроченные
@@ -707,7 +739,7 @@ const AdminPanel = () => {
       {/* Управление балансами */}
       <div className="card">
         <div className="flex items-center space-x-2 mb-6">
-          <Users size={24} className="text-minecraft-green" />
+          <Users size={24} className="text-primary" />
           <h2 className="text-xl font-bold text-white">Управление балансами</h2>
         </div>
         
@@ -732,13 +764,13 @@ const AdminPanel = () => {
           />
         </div>
         
-        <button
-          onClick={handleBalanceUpdate}
-          className="admin-button px-6 py-2 rounded text-white font-bold"
-        >
-          <Edit size={16} className="inline mr-2" />
-          Обновить баланс
-        </button>
+                  <button
+            onClick={handleBalanceUpdate}
+            className="btn-primary"
+          >
+            <Edit size={16} className="inline mr-2" />
+            Обновить баланс
+          </button>
       </div>
 
       {/* Управление клиентами */}
@@ -770,7 +802,7 @@ const AdminPanel = () => {
           </div>
           <button
             onClick={handleAddClient}
-            className="admin-button px-6 py-2 rounded text-white font-bold"
+            className="btn-success"
           >
             <Plus size={16} className="inline mr-2" />
             Добавить клиента
@@ -794,7 +826,7 @@ const AdminPanel = () => {
           </div>
           <button
             onClick={handleDeleteClient}
-            className="bg-red-600 hover:bg-red-700 px-6 py-2 rounded text-white font-bold transition-colors"
+            className="btn-danger"
           >
             <Trash2 size={16} className="inline mr-2" />
             Удалить клиента
@@ -802,7 +834,55 @@ const AdminPanel = () => {
         </div>
       </div>
 
+      {/* Системные настройки */}
+      <div className="card">
+        <div className="flex items-center space-x-2 mb-6">
+          <Settings size={24} className="text-warning" />
+          <h2 className="text-xl font-bold text-white">Системные настройки</h2>
+        </div>
+        
+        {/* Нормализация рынка */}
+        <div className="mb-6">
+          <h3 className="text-lg font-semibold text-white mb-3">Нормализация рынка</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <input
+              type="number"
+              step="0.1"
+              placeholder="Значение нормализации"
+              value={marketNormalizationForm.market_normalization}
+              onChange={(e) => setMarketNormalizationForm({...marketNormalizationForm, market_normalization: e.target.value})}
+              className="input-field"
+            />
+            <button
+              onClick={handleUpdateMarketNormalization}
+              className="btn-primary"
+            >
+              <Settings size={16} className="inline mr-2" />
+              Обновить нормализацию
+            </button>
+          </div>
+          <p className="text-sm text-gray-400">
+            Нормализация рынка влияет на расчет цен ресурсов. Меньшие значения = более высокие цены.
+          </p>
+        </div>
 
+        {/* Очистка истории */}
+        <div className="border-t border-gray-600 pt-6">
+          <h3 className="text-lg font-semibold text-white mb-3">Очистка истории цен</h3>
+          <div className="mb-4">
+            <button
+              onClick={handleClearPriceHistory}
+              className="btn-danger"
+            >
+              <Trash2 size={16} className="inline mr-2" />
+              Очистить всю историю цен
+            </button>
+          </div>
+          <p className="text-sm text-gray-400">
+            Внимание! Это действие удалит всю историю изменения цен и не может быть отменено.
+          </p>
+        </div>
+      </div>
 
       {/* Кнопка обновления данных */}
       <div className="text-center">
